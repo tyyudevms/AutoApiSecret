@@ -15,7 +15,7 @@ import json,sys,time
 path=sys.path[0]+r'/1.txt'
 num1 = 0
 
-def gettoken(refresh_token):
+def gettoken(refresh_token, client_id, client_secret):
     headers={'Content-Type':'application/x-www-form-urlencoded'
             }
     data={'grant_type': 'refresh_token',
@@ -31,13 +31,13 @@ def gettoken(refresh_token):
     with open(path, 'w+') as f:
         f.write(refresh_token)
     return access_token
-def main():
+def main(client_id, client_secret):
     fo = open(path, "r+")
     refresh_token = fo.read()
     fo.close()
     global num1
     localtime = time.asctime( time.localtime(time.time()) )
-    access_token=gettoken(refresh_token)
+    access_token=gettoken(refresh_token, client_id, client_secret)
     headers={
     'Authorization':access_token,
     'Content-Type':'application/json'
@@ -81,4 +81,6 @@ def main():
         print("pass")
         pass
 for _ in range(3):
-    main()
+    client_id = sys.argv[1]
+    client_secret = sys.argv[2]
+    main(client_id, client_secret)
